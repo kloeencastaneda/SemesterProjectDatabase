@@ -48,29 +48,39 @@ namespace SemesterProjectTest
         private void btnLogin_Click(object sender, EventArgs e)
         {
 
-            int role = 0;
+               var filter = Builders<User>.Filter.Eq("Username", txtUsername.Text) & Builders<User>.Filter.Eq("Password", txtPassword.Text);
 
-            if (role == 0) { 
-                Admin window = new Admin();
-                this.Hide();
-                window.Show();
-            }
-            else if (role == 1)
-            {
-                Manager window = new Manager();
-                this.Hide();
-                window.Show();
-            }
+    var user = users.Find(filter).FirstOrDefault();
+    if (user != null)
 
-            else if (role == 2)
-            {
-                Staff window = new Staff();
-                this.Hide();
-                window.Show();
+    {
+        MessageBox.Show("Logged in successfully!");
 
-            }
+        if (user.Role == "0")
+        {
+            var window = new Admin();
+            window.Show();
+        }
+
+        else if (user.Role == "1")
+        {
+            var window = new Manager();
+            window.Show();
+        }
+
+        else
+        {
+            var window = new Staff();
+            window.Show();
         }
     }
+    else
+    {
+        MessageBox.Show("Try logging in again.");
+        }
+    }
+}
+
     class User
     {
         [BsonId]
